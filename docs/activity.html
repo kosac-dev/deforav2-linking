@@ -18,14 +18,15 @@
     
 
     /**
-    * 페이지 로딩이 되면 모바일앱에 Approval Access 정보를 요청한다.
+    * 페이지 로딩 후 동작
     */
     document.addEventListener("DOMContentLoaded", function(event) 
     {
-      const linkPath = getLinkPath();
+        //페이지 로딩이 되면 LinkPath 정보를 분석한다.
+        const linkPath = getLinkPath();
       
-      linkDeforaApp(linkPath);
-    }
+        linkDeforaApp(linkPath);
+    });
 
     /**
     * 페이지 호출시 파라미터 값을 추출하여, 요청 파라미터 값을 설정
