@@ -22,10 +22,11 @@
     */
     document.addEventListener("DOMContentLoaded", function(event) 
     {
+        const env = checkEnv();
         //페이지 로딩이 되면 LinkPath 정보를 분석한다.
         const linkPath = getLinkPath();
       
-        linkDeforaApp(linkPath);
+        linkDeforaApp(env, linkPath);
     });
 
     /**
@@ -35,16 +36,38 @@
         progress(">>> LinkPath Analyzing...");
 
         //get Authorization code
-        var url_string = window.location.href; // www.test.com?filename=test
-        var url = new URL(url_string);
-        var linkPath = url.searchParams.get("link_path");
+        const url_string = window.location.href; // www.test.com?filename=test
+        const url = new URL(url_string);
+        const linkPath = url.searchParams.get("link_path");
 
         progress(">>> LinkPath is: " + linkPath);
         return linkPath;
     }
 
-    function linkDeforaApp(linkPath){
-        
+    function checkEnv() {
+        let os;
+
+        var mobile = (/iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));	 
+
+        if (mobile) {
+            var userAgent = navigator.userAgent.toLowerCase();
+            if (userAgent.search("android") > -1){
+                return os = "android";
+            }else if ((userAgent.search("iphone") > -1) || (userAgent.search("ipod") > -1) || (userAgent.search("ipad") > -1)){
+                return os = "ios";
+            }else{
+                return os = "otehr";
+            }
+
+        } else {
+            return os = "pc";
+        }
+    }
+
+
+    function linkDeforaApp(env, linkPath){
+        if (env === 'pc') { location.href = 'https://defora.io/'; return }
+
         location.href = linkPath;
 
         setTimeout( function() {
