@@ -45,23 +45,27 @@
     }
 
     function checkEnv() {
+        progress(">>> checkEnv...");
         let os;
 
-        var mobile = (/iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));	 
+        const mobile = (/iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));	 
 
         if (mobile) {
-            var userAgent = navigator.userAgent.toLowerCase();
+            const userAgent = navigator.userAgent.toLowerCase();
             if (userAgent.search("android") > -1){
-                return os = "android";
+                os = "android";
             }else if ((userAgent.search("iphone") > -1) || (userAgent.search("ipod") > -1) || (userAgent.search("ipad") > -1)){
-                return os = "ios";
+                os = "ios";
             }else{
-                return os = "otehr";
+                os = "otehr";
             }
 
         } else {
-            return os = "pc";
+            os = "pc";
         }
+
+        progress(">>> Env: " + os);
+        return os;
     }
 
 
