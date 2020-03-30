@@ -18,7 +18,8 @@
 
     // Static Variables
     const IOS_APPSTORE_URL = 'https://apps.apple.com/us/app/defora/id1489132682';
-    const ANDROID_APPSTORE_URL = 'https://play.google.com/store/apps/details?id=com.deforav2';
+    const ANDROID_URL_PREFIX = 'intent://';
+    const ANDROID_URL_SUBFIX = '#Intent;scheme=defora;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.deforav2;end';
     const DEFORA_URL = 'https://defora.io/';
 
     /**
@@ -74,16 +75,17 @@
 
 
     function linkDeforaApp(env, linkPath){
+        if (env === 'pc') { progress(">>> linkDeforaApp pc: " + DEFORA_URL); location.href = DEFORA_URL; return }
+        if (env === 'android') { const androidUrl = ANDROID_URL_PREFIX + linkPath + ANDROID_URL_SUBFIX; progress(">>> linkDeforaApp android: " + androidUrl); location.href = androidUrl; return }
+
         location.href = linkPath;
 
         setTimeout( function() {
             progress(">>> setTimeout: " + env);
-            if (env === 'pc') { location.href = DEFORA_URL; return }
             // if (env === 'android') { window.open(ANDROID_APPSTORE_URL); return }
             if (env === 'ios') { window.open(IOS_APPSTORE_URL); return }
         }, 1500);
     }
-
     /**
     * 에러 발생 시, Notice 및 Close 버튼 활성화
     */
