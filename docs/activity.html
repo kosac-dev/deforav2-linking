@@ -79,7 +79,7 @@
         if (env === 'pc') { progress(">>> linkDeforaApp pc: " + DEFORA_URL); location.href = DEFORA_URL; return }
         if (env === 'android') {
             const actionPath = linkPath.replace(LINK_SCHEMA, '');
-            const androidUrl = ANDROID_URL_PREFIX + linkPath + ANDROID_URL_SUBFIX;
+            const androidUrl = ANDROID_URL_PREFIX + actionPath + ANDROID_URL_SUBFIX;
             progress(">>> linkDeforaApp android: " + androidUrl);
             location.href = androidUrl;
             return;
