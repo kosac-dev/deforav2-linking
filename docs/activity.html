@@ -17,6 +17,7 @@
     <script>
 
     // Static Variables
+    const LINK_SCHEMA = 'defora://';
     const IOS_APPSTORE_URL = 'https://apps.apple.com/us/app/defora/id1489132682';
     const ANDROID_URL_PREFIX = 'intent://';
     const ANDROID_URL_SUBFIX = '#Intent;scheme=defora;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.deforav2;end';
@@ -76,7 +77,13 @@
 
     function linkDeforaApp(env, linkPath){
         if (env === 'pc') { progress(">>> linkDeforaApp pc: " + DEFORA_URL); location.href = DEFORA_URL; return }
-        if (env === 'android') { const androidUrl = ANDROID_URL_PREFIX + linkPath + ANDROID_URL_SUBFIX; progress(">>> linkDeforaApp android: " + androidUrl); location.href = androidUrl; return }
+        if (env === 'android') {
+            const actionPath = linkPath.replace(LINK_SCHEMA, '');
+            const androidUrl = ANDROID_URL_PREFIX + linkPath + ANDROID_URL_SUBFIX;
+            progress(">>> linkDeforaApp android: " + androidUrl);
+            location.href = androidUrl;
+            return;
+        }
 
         location.href = linkPath;
 
