@@ -15,7 +15,11 @@
 
     <!-- Script -->
     <script>
-    
+
+    // Static Variables
+    const IOS_APPSTORE_URL = 'https://apps.apple.com/us/app/defora/id1489132682';
+    const ANDROID_APPSTORE_URL = 'https://play.google.com/store/apps/details?id=com.deforav2';
+    const DEFORA_URL = 'https://defora.io/';
 
     /**
     * 페이지 로딩 후 동작
@@ -57,7 +61,7 @@
             }else if ((userAgent.search("iphone") > -1) || (userAgent.search("ipod") > -1) || (userAgent.search("ipad") > -1)){
                 os = "ios";
             }else{
-                os = "otehr";
+                os = "other";
             }
 
         } else {
@@ -70,12 +74,12 @@
 
 
     function linkDeforaApp(env, linkPath){
-        if (env === 'pc') { location.href = 'https://defora.io/'; return }
-
         location.href = linkPath;
 
         setTimeout( function() {
-            window.open(ios_appstore_url);
+            if (env === 'pc') { location.href = DEFORA_URL; return }
+            if (env === 'android') { window.open(ANDROID_APPSTORE_URL); return }
+            if (env === 'ios') { window.open(IOS_APPSTORE_URL); return }
         }, 1500);
     }
 
