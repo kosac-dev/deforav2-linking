@@ -79,7 +79,7 @@
         setTimeout( function() {
             progress(">>> setTimeout: " + env);
             if (env === 'pc') { location.href = DEFORA_URL; return }
-            if (env === 'android') { window.open(ANDROID_APPSTORE_URL); return }
+            // if (env === 'android') { window.open(ANDROID_APPSTORE_URL); return }
             if (env === 'ios') { window.open(IOS_APPSTORE_URL); return }
         }, 1500);
     }
