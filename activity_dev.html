@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <title>Defora - Activity Link</title>
+
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <!-- Script -->
+    <script>
+
+    // Static Variables
+    const LINK_SCHEMA = 'defora://';
+    const IOS_APPSTORE_URL = 'https://apps.apple.com/us/app/defora/id1489132682';
+    const ANDROID_URL_PREFIX = 'intent://';
+    const ANDROID_URL_SUBFIX = '#Intent;scheme=defora;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.deforav2.dev;end';
+    const DEFORA_URL = 'https://defora.io/';
+
+    /**
+    * 페이지 로딩 후 동작
+    */
+    document.addEventListener("DOMContentLoaded", function(event) 
+    {
+        const env = checkEnv();
+        //페이지 로딩이 되면 LinkPath 정보를 분석한다.
+        const linkPath = getLinkPath();
+      
+        linkDeforaApp(env, linkPath);
+    });
+
+    /**
+    * 페이지 호출시 파라미터 값을 추출하여, 요청 파라미터 값을 설정
+    */
+    function getLinkPath() {
+        progress(">>> LinkPath Analyzing...");
+
+        //get Authorization code
+        const url_string = window.location.href; // www.test.com?filename=test
+        const url = new URL(url_string);
+        const linkPath = url.searchParams.get("link_path");
+
+        progress(">>> LinkPath is: " + linkPath);
+        return linkPath;
+    }
+
+    function checkEnv() {
+        progress(">>> checkEnv...");
+        let os;
+
+        const mobile = (/iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));	 
+
+        if (mobile) {
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (userAgent.search("android") > -1){
+                os = "android";
+            }else if ((userAgent.search("iphone") > -1) || (userAgent.search("ipod") > -1) || (userAgent.search("ipad") > -1)){
+                os = "ios";
+            }else{
+                os = "other";
+            }
+
+        } else {
+            os = "pc";
+        }
+
+        progress(">>> Env: " + os);
+        return os;
+    }
+
+
+    function linkDeforaApp(env, linkPath){
+        if (env === 'pc') { progress(">>> linkDeforaApp pc: " + DEFORA_URL); location.href = DEFORA_URL; return }
+        if (env === 'android') {
+            const actionPath = linkPath.replace(LINK_SCHEMA, '');
+            const androidUrl = ANDROID_URL_PREFIX + actionPath + ANDROID_URL_SUBFIX;
+            progress(">>> linkDeforaApp android: " + androidUrl);
+            location.href = androidUrl;
+            return;
+        }
+
+        location.href = linkPath;
+
+        setTimeout( function() {
+            progress(">>> setTimeout: " + env);
+            // if (env === 'android') { window.open(ANDROID_APPSTORE_URL); return }
+            if (env === 'ios') { window.open(IOS_APPSTORE_URL); return }
+        }, 1500);
+    }
+    /**
+    * 에러 발생 시, Notice 및 Close 버튼 활성화
+    */
+    function errorNotice(msg, isClose) 
+    {
+        document.getElementById("errorNotice").innerText = msg;
+
+        if (isClose) { document.getElementById("closeArea").style.display = "inline-block"; }
+    }
+
+    /**
+    * 에러 발생 시, Notice 및 Close 버튼 활성화
+    */
+    function progress(msg) 
+    {
+        document.getElementById("progress").innerText += '\n'+msg;
+    }
+
+    </script>
+</head>
+
+<body style="height: 100%; display: flex; flex-direction: column; justify-content: space-around; background-color: lightgray; margin-top: 10%; margin-bottom: 10%;">
+    <div style="align-content: center;">
+        <h2 style="font-size: 53pt; text-align: center;">Defora Activity Share</h2>
+    </div>
+    <div>
+        <p id="errorNotice" style="color:red"></p>
+    </div>
+    <div>
+        <p id="notice" style="color:blue"></p>
+    </div>
+    <div>
+        <p id="code"></p>
+        <p id="cid"></p>
+        <p id="cid_secret"></p>
+        <p id="tid"></p>
+        <p id="sid"></p>
+    </div>
+    <div style="text-align: center;">
+        <button type="button" class="btn btn-info btn-lg btn-block" style="font-size:40px;" onclick="javascript:window.close()">닫기</button>
+    </div>
+    <div>
+        <p id="progress" style="color:black"></p>
+    </div>
+</body>
+</html>
